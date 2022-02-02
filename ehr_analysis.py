@@ -8,7 +8,7 @@ def parse_data(filename: str):
     patient_dict = {}
     with open(filename) as f:
         for line in f:
-            fields = line.split()
+            fields = line.split("\t")
             patient_dict[fields[0]] = fields[1:]
     del patient_dict["\ufeffPatientID"]
     return patient_dict
@@ -25,17 +25,30 @@ def num_older_than(age):
     count = 0
     for vals in patient_dict:
         patient = patient_dict[vals]
-        age_str = patient[1] + patient[2]
-        time_diff = datetime.now() - datetime.strptime(age_str, "%Y-%m-%d%H:%M:%S.%f")
+        age_str = patient[1]
+        time_diff = datetime.now() - datetime.strptime(age_str, "%Y-%m-%d %H:%M:%S.%f")
         years = time_diff.total_seconds() / 31536000
         if years > age:
             count += 1
-    print(count)
+    return count
 
 
-# def sick_patients(lab, gt_lt, value):
+def sick_patients(lab, gt_lt, value):
+    """returns patient ID with characteristics input for lab test"""
+    list_of_pid = []
+    # first go through dictionary and find patients with provided labs
+    # this has the advantage of returning only unique patient IDs
+    for key, vals in lab_dict.items():
+        if vals[1] == lab:
+            if gt_lt == "<":
+                if int(float(vals[2])) < value:
+                    list_of_pid.append(key)
+            elif gt_lt == ">":
+                if int(float(vals[2])) > value:
+                    list_of_pid.append(key)
+    return list_of_pid
 
 
-# parse_data("PatientCorePopulatedTable.txt")
-# num_older_than(63)
-print(lab_dict)
+# print(parse_data("PatientCorePopulatedTable.txt"))
+# print(sick_patients("METABOLIC: SODIUM", ">", 130))
+# print(lab_dict)
