@@ -61,3 +61,4 @@ def sick_patients(lab, gt_lt, value):
 # print(parse_data("PatientCorePopulatedTable.txt"))
 # print(sick_patients("METABOLIC: SODIUM", ">", 130))
 # print(lab_dict)
+
