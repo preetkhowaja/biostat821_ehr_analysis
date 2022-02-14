@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta, date
 
 
-def parse_data(filename: str):
+def parse_data(filename: str) -> dict:
     """I have used a dictionary where each patient's data
     can be accessed using PatientID so that the computational
     complexity is lower than using a list. I can access records
@@ -15,33 +15,29 @@ def parse_data(filename: str):
         for line in f:  # N for number of records
             fields = line.split("\t")  # N times
             patient_dict[fields[0]] = fields[1:]  # N times
-    del patient_dict["\ufeffPatientID"]  #
     return patient_dict
 
 
-## Here we import the data into a dictionary
-patient_dict = parse_data("PatientCorePopulatedTable.txt")
-lab_dict = parse_data("LabsCorePopulatedTable.txt")
-
 # We access the above patient_dict to return number of
 # patients older than input age
-def num_older_than(age):
+def num_older_than(age: int) -> int:
     """returns number of patients older than given age"""
     """The big O notationa for this is O(6N)"""
     count = 0  # 1
-    for vals in patient_dict:  # Everything in this loop happens N times
-        patient = patient_dict[vals]  # 1
+    for key, vals in patient_dict.items():  # Everything in this loop happens N times
+        patient = patient_dict[key]  # 1
         age_str = patient[1]  # 1
-        time_diff = datetime.now() - datetime.strptime(
-            age_str, "%Y-%m-%d %H:%M:%S.%f"
-        )  # 1
-        years = time_diff.total_seconds() / 31536000  # 1
-        if years > age:  # 1 in dictionaries
-            count += 1  # 1
+        if key.isnumeric():
+            time_diff = datetime.now() - datetime.strptime(
+                age_str, "%Y-%m-%d %H:%M:%S.%f"
+            )  # 1
+            years = time_diff.total_seconds() / 31536000  # 1
+            if years > age:  # 1 in dictionaries
+                count += 1  # 1
     return count
 
 
-def sick_patients(lab, gt_lt, value):
+def sick_patients(lab: str, gt_lt: str, value: int) -> list:
     """returns patient ID with characteristics input for lab test"""
     """Complexity is O(5N)"""
     list_of_pid = []
@@ -55,10 +51,12 @@ def sick_patients(lab, gt_lt, value):
             elif gt_lt == ">":
                 if int(float(vals[2])) > value:
                     list_of_pid.append(key)
+            else:
+                raise ValueError("Please enter < or > as the second argument.")
     return list_of_pid
 
 
-# print(parse_data("PatientCorePopulatedTable.txt"))
-# print(sick_patients("METABOLIC: SODIUM", ">", 130))
-# print(lab_dict)
-
+if __name__ == "__main__":
+    ## Here we import the data into a dictionary
+    patient_dict = parse_data("PatientCorePopulatedTable.txt")
+    lab_dict = parse_data("LabsCorePopulatedTable.txt")
