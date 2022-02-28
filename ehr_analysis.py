@@ -65,7 +65,18 @@ def sick_patients(lab: str, gt_lt: str, value: int) -> List[str]:
     return list_of_pid
 
 
+def patient_age(p_id):
+    """takes patient ID as input and returns patient's age at first admission"""
+    info = patient_dict[p_id]
+    time_diff = datetime.now() - datetime.strptime(info[1], "%Y-%m-%d %H:%M:%S.%f")
+    age = time_diff.total_seconds() / 31536000
+    assert type(age) == float
+    return age
+
+
 if __name__ == "__main__":
     ## Here we import the data into a dictionary
     patient_dict = parse_data("PatientCorePopulatedTable.txt")
     lab_dict = parse_data("LabsCorePopulatedTable.txt")
+    print(patient_dict)
+    print(patient_age("0681FA35-A794-4684-97BD-00B88370DB41"))
