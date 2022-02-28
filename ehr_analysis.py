@@ -15,6 +15,9 @@ def parse_data(filename: str) -> Dict[str, List[str]]:
         for line in f:  # N for number of records
             fields = line.split("\t")  # N times
             patient_dict[fields[0]] = fields[1:]  # N times
+            # Check whether the dictionary contains the right
+            # number of fields for each key value
+            assert len(patient_dict[fields[0]]) == len(fields[1:])
     return patient_dict
 
 
@@ -27,13 +30,16 @@ def num_older_than(age: int) -> int:
     for key in patient_dict:  # Everything in this loop happens N times
         patient = patient_dict[key]  # 1
         age_str = patient[1]  # 1
-        if key.isnumeric():
+        if not age_str.isalpha():
             time_diff = datetime.now() - datetime.strptime(
                 age_str, "%Y-%m-%d %H:%M:%S.%f"
             )  # 1
             years = time_diff.total_seconds() / 31536000  # 1
+            assert type(years) == float
             if years > age:  # 1 in dictionaries
                 count += 1  # 1
+    # The total number of returns has to be less than the length of the dictionary
+    assert count <= len(patient_dict)
     return count
 
 
@@ -53,6 +59,9 @@ def sick_patients(lab: str, gt_lt: str, value: int) -> List[str]:
                     list_of_pid.append(key)
             else:
                 raise ValueError("Please enter < or > as the second argument.")
+    # Check if the length of the list is not more than number of observations
+    # in the data
+    assert len(list_of_pid) <= len(lab_dict)
     return list_of_pid
 
 
@@ -60,4 +69,3 @@ if __name__ == "__main__":
     ## Here we import the data into a dictionary
     patient_dict = parse_data("PatientCorePopulatedTable.txt")
     lab_dict = parse_data("LabsCorePopulatedTable.txt")
-    print(sick_patients("CBC: MCHC", ">", 37))
