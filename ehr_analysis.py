@@ -1,8 +1,11 @@
 ### This module contains functions to parse and analyze patient data
 from datetime import datetime, timedelta, date
+from typing import TypeVar, Dict, List
+
+T = str
 
 
-def parse_data(filename: str) -> dict:
+def parse_data(filename: str) -> Dict[str, List[T]]:
     """I have used a dictionary where each patient's data
     can be accessed using PatientID so that the computational
     complexity is lower than using a list. I can access records
@@ -37,7 +40,7 @@ def num_older_than(age: int) -> int:
     return count
 
 
-def sick_patients(lab: str, gt_lt: str, value: int) -> list:
+def sick_patients(lab: str, gt_lt: str, value: int) -> List[str]:
     """returns patient ID with characteristics input for lab test"""
     """Complexity is O(5N)"""
     list_of_pid = []
@@ -60,3 +63,4 @@ if __name__ == "__main__":
     ## Here we import the data into a dictionary
     patient_dict = parse_data("PatientCorePopulatedTable.txt")
     lab_dict = parse_data("LabsCorePopulatedTable.txt")
+    print(sick_patients("CBC: MCHC", ">", 37))
