@@ -14,3 +14,9 @@ Use the function sick_patients(test_type, gt_lt, value) which takes a test type,
 ```sick_patients('URINALYSIS: WHITE BLOOD CELLS', '>', 1)```
 
 
+3. **Patient's Age on Admission**
+
+Use the function pateint_age(patientID) to obtain the input patient's age on first admission. For example;
+
+```patient_age('1A8791E3-A61C-455A-8DEE-763EB90C9B2C')```
+
