@@ -1,34 +1,16 @@
 # EHR Analysis
 
-In the module ehr_analysis.py, we parse data from input files and perform data analysis on them.
+To access data from this repository, ensure you have the .txt files downloaded. The file to be run first is ehr_analysis.py. This loads your data and allows you the following functionalities:
 
-## Data parsing
 
-Define a function `parse_data(filename: str) -> ???` that reads and parses the data files. Choose appropriate data structures such that the expected analyses (below) are efficient.
+1. **Number of patients older than**
 
-Include a module docstring describing your rationale for choosing these data structures.
+You can use the function num_older_than(number) which takes an integer input and returns the number of patients in your file older than that input age.
 
-Include a function docstring analyzing the computational complexity of the data parser.
+2. **Sick Patients**
 
-## Analysis
+Use the function sick_patients(test_type, gt_lt, value) which takes a test type, a greater than or less than sign and a numerical value and returns the patient IDs for which this condition holds true. For example,
 
-Define the following functions to interrogate the data. In each one, include a function docstring describing its computational complexity _at runtime_ (i.e. after parsing into the global data structures).
+```sick_patients('URINALYSIS: WHITE BLOOD CELLS', '>', 1)```
 
-### Old patients
-
-The function `num_older_than(age, ???)` should take the data and return the number of patients older than a given age (in years). For example,
-
-```python
->> num_older_than(51.2)
-52
-```
-
-### Sick patients
-
-The function `sick_patients(lab, gt_lt, value, ???)` should take the data and return a (unique) list of patients who have a given test with value above (">") or below ("<") a given level. For example,
-
-```python
->> sick_patients("METABOLIC: ALBUMIN", ">", 4.0)
-["FB2ABB23-C9D0-4D09-8464-49BF0B982F0F", "64182B95-EB72-4E2B-BE77-8050B71498CE"]
-```
 
