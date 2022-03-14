@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta, date
 from typing import TypeVar, Dict, List
 
+
 def parse_data(filename: str) -> Dict[str, List[str]]:
     """I have used a dictionary where each patient's data
     can be accessed using PatientID so that the computational
