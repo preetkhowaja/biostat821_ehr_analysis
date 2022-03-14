@@ -2,10 +2,7 @@
 from datetime import datetime, timedelta, date
 from typing import TypeVar, Dict, List
 
-T = str
-
-
-def parse_data(filename: str) -> Dict[str, List[T]]:
+def parse_data(filename: str) -> Dict[str, List[str]]:
     """I have used a dictionary where each patient's data
     can be accessed using PatientID so that the computational
     complexity is lower than using a list. I can access records
@@ -27,7 +24,7 @@ def num_older_than(age: int) -> int:
     """returns number of patients older than given age"""
     """The big O notationa for this is O(6N)"""
     count = 0  # 1
-    for key, vals in patient_dict.items():  # Everything in this loop happens N times
+    for key in patient_dict:  # Everything in this loop happens N times
         patient = patient_dict[key]  # 1
         age_str = patient[1]  # 1
         if key.isnumeric():
