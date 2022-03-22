@@ -65,7 +65,7 @@ def sick_patients(lab: str, gt_lt: str, value: int) -> List[str]:
     return list_of_pid
 
 
-def patient_age(p_id):
+def patient_age(p_id: str) -> float:
     """takes patient ID as input and returns patient's age at first admission"""
     info = patient_dict[p_id]
     time_diff = datetime.now() - datetime.strptime(info[1], "%Y-%m-%d %H:%M:%S.%f")
