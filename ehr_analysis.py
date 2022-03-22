@@ -27,7 +27,7 @@ def num_older_than(age: int) -> int:
     """returns number of patients older than given age"""
     """The big O notationa for this is O(6N)"""
     count = 0  # 1
-    for key in patient_dict.items():  # Everything in this loop happens N times
+    for key in patient_dict:  # Everything in this loop happens N times
         patient = patient_dict[key]  # 1
         age_str = patient[1]  # 1
         if not age_str.isalpha():
