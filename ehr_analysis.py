@@ -1,6 +1,7 @@
 ### This module contains functions to parse and analyze patient data
 from datetime import datetime, timedelta, date
 from typing import TypeVar, Dict, List
+import sqlite3
 
 
 def parse_data(filename: str) -> Dict[str, List[str]]:
@@ -94,3 +95,12 @@ class Patient:
 class Lab:
     def __init__(self) -> None:
         pass
+
+
+# Need to create database for patient info by using INSERT
+
+
+# Need to access data from database using sqlite and
+# then set all attributes as properties in Patient and Lab classes
+# with SQL queries using help from:
+# https://docs.python.org/3/library/sqlite3.html
