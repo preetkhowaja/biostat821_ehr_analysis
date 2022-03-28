@@ -81,3 +81,16 @@ if __name__ == "__main__":
     lab_dict = parse_data("LabsCorePopulatedTable.txt")
     print(patient_dict)
     print(patient_age("0681FA35-A794-4684-97BD-00B88370DB41"))
+
+
+# Initiating Classes for Patient and Lab
+
+
+class Patient:
+    def __init__(self, id) -> None:
+        pass
+
+
+class Lab:
+    def __init__(self) -> None:
+        pass
