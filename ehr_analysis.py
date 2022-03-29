@@ -116,12 +116,6 @@ def num_older_than(age: int) -> int:
     return count
 
 
-<<<<<<< HEAD
-class Lab:
-    def __init__(self) -> None:
-        pass
-
-
 # NEED TO ADAPT TO CLASSES
 # def sick_patients(lab: str, gt_lt: str, value: int) -> list:
 #     """returns patient ID with characteristics input for lab test"""
@@ -143,7 +137,6 @@ class Lab:
 #     # in the data
 #     assert len(list_of_pid) <= len(lab_dict)
 #     return list_of_pid
-
 
 # Need to create database for patient info by using INSERT
 
