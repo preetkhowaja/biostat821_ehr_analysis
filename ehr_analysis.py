@@ -15,7 +15,9 @@ def parse_data(filename: str) -> Dict[str, List[str]]:
     with open(filename) as f:  # 1
         for line in f:  # N for number of records
             fields = line.split("\t")  # N times
-            patient_dict[fields[0]] = fields[1:]  # N times
+            # Strip the trailing newline character
+            updated_last_word = fields[-1].strip()
+            patient_dict[fields[0]] = fields[1:-1] + [updated_last_word]  # N times
             # Check whether the dictionary contains the right
             # number of fields for each key value
             assert len(patient_dict[fields[0]]) == len(fields[1:])
