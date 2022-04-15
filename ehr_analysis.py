@@ -71,4 +71,4 @@ def patient_age(p_dict: dict, p_id: str) -> float:
     time_diff = datetime.now() - datetime.strptime(info[1], "%Y-%m-%d %H:%M:%S.%f")
     age = time_diff.total_seconds() / 31536000
     assert type(age) == float
-    return age
+    return round(age, 1)

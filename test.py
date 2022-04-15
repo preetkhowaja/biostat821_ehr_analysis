@@ -42,6 +42,9 @@ def test():
     # Check if it returns all patients if asked for those with age older than 0
     assert num_older_than(patient_dict, 0) == 4
 
+    # Check patient age function
+    assert patient_age(patient_dict, "DB22A4D9-7E4D-485C-916A-9CD1386507FB") == 51.8
+
     # Check lab dictionary output
     lab_dictionary = parse_data("sample_lab.txt")
     desired_lab = {
