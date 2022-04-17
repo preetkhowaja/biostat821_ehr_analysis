@@ -9,7 +9,7 @@ from ehr_analysis import (
     patient_age,
 )
 
-
+# Patient File and Functionality Tests
 def test():
     patient_dictionary_desired = {
         "PatientID": ["PatientGender", "PatientDateOfBirth", "PatientRace"],
@@ -45,6 +45,9 @@ def test():
     # Check patient age function
     assert patient_age(patient_dict, "DB22A4D9-7E4D-485C-916A-9CD1386507FB") == 51.8
 
+
+# Lab File and Functionality Tests
+def test_():
     # Check lab dictionary output
     lab_dictionary = parse_data("sample_lab.txt")
     desired_lab = {

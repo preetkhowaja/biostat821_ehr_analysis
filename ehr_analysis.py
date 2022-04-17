@@ -28,7 +28,7 @@ def parse_data(filename: str) -> Dict[str, List[str]]:
 
 # We access the above patient_dict to return number of
 # patients older than input age
-def num_older_than(p_dict: dict, age: int) -> int:
+def num_older_than(p_dict: Dict[str, List[str]], age: int) -> int:
     """returns number of patients older than given age"""
     """The big O notationa for this is O(6N)"""
     count = 0  # 1
@@ -47,7 +47,9 @@ def num_older_than(p_dict: dict, age: int) -> int:
     return count
 
 
-def sick_patients(lab_dict: dict, lab: str, gt_lt: str, value: int) -> List[str]:
+def sick_patients(
+    lab_dict: Dict[str, List[str]], lab: str, gt_lt: str, value: int
+) -> List[str]:
     """returns patient ID with characteristics input for lab test"""
     """Complexity is O(5N)"""
     list_of_pid = []
@@ -65,7 +67,7 @@ def sick_patients(lab_dict: dict, lab: str, gt_lt: str, value: int) -> List[str]
     return list_of_pid
 
 
-def patient_age(p_dict: dict, p_id: str) -> float:
+def patient_age(p_dict: Dict[str, List[str]], p_id: str) -> float:
     """takes patient ID as input and returns patient's age at first admission"""
     info = p_dict[p_id]
     time_diff = datetime.now() - datetime.strptime(info[1], "%Y-%m-%d %H:%M:%S.%f")
