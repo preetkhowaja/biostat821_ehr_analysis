@@ -2,9 +2,13 @@
 from datetime import datetime, timedelta, date
 from typing import TypeVar, Dict, List
 
+from itsdangerous import NoneAlgorithm
+
 # Initiating Classes for Patient and Lab
 class Patient:
-    def __init__(self, id: str, gender: str, dob: str, race: str, labs: list) -> None:
+    def __init__(
+        self, id: str, gender: str, dob: str, race: str, labs: list = None
+    ) -> None:
         self.id = id
         self.gender = gender
         self.dob = datetime.strptime(dob, "%Y-%m-%d %H:%M:%S.%f")
@@ -18,18 +22,18 @@ class Patient:
     def age(self):
         """The age property"""
         time_diff = datetime.now() - self.dob
-        return time_diff.total_seconds() / 31536000
+        return round(time_diff.total_seconds() / 31536000, 2)
 
     @property
     def age_at_first_admit(self):
         """Patient age at first admission"""
-        earliest_date = self.labs[0].lab_date
-        for L in self.labs[1:]:
+        earliest_date = self.lab[0].lab_date
+        for L in self.lab[1:]:
             if L.lab_date <= earliest_date:
                 earliest_date = L.lab_date
-        if self.labs == []:
+        if self.lab == []:
             raise ValueError("Patient not in records")
-        return earliest_date - self.dob
+        return round((earliest_date - self.dob).days / 365, 2)
 
 
 class Lab:
@@ -49,7 +53,7 @@ class Lab:
 
 def parse_data(
     lab_file: str, patient_file: str, get_lab_dict: bool = False
-):  # -> Dict[str, List[str]]:
+) -> Dict[str, List[object]]:
 
     patient_dict = {}  # 1
     lab_dict = {}
@@ -63,7 +67,7 @@ def parse_data(
                 pass
             else:
                 fields = line.split("\t")
-                lab_date = datetime.strptime(fields[5][0:23], "%Y-%m-%d %H:%M:%S.%f")
+                lab_date = datetime.strptime(fields[5][:23], "%Y-%m-%d %H:%M:%S.%f")
                 lab_object = Lab(fields[0], fields[2], fields[3], fields[4], lab_date)
                 if lab_object.p_id in lab_dict:
                     # append to value of exisitng id
@@ -98,41 +102,42 @@ def parse_data(
         return patient_dict
 
 
-if __name__ == "__main__":
-    ## Here we import the objects into a dictionary
-    patient_file = "PatientCorePopulatedTable.txt"
-    lab_file = "LabsCorePopulatedTable.txt"
-    patient_dict, lab_dict = parse_data(lab_file, patient_file, get_lab_dict=True)
-
-
 # We access the above patient_dict to return number of
 # patients older than input age
-def num_older_than(age: int) -> int:
+def num_older_than(p_dict: Dict[str, List[object]], age: int) -> int:
     count = 0  # 1
-    for P in patient_dict:
-        if P.age > age:
+    for P in p_dict:
+        if p_dict[P].age > age:
             count += 1
     return count
 
 
-# NEED TO ADAPT TO CLASSES
-# def sick_patients(lab: str, gt_lt: str, value: int) -> list:
-#     """returns patient ID with characteristics input for lab test"""
-#     """Complexity is O(5N)"""
-#     list_of_pid = []
-#     # first go through dictionary and find patients with provided labs
-#     # this has the advantage of returning only unique patient IDs
-#     for key, vals in lab_dict.items():  # N
-#         if vals[1] == lab:  # 1 in dictionaries
-#             if gt_lt == "<":  # 1
-#                 if int(float(vals[2])) < value:  # 1
-#                     list_of_pid.append(key)  # 1
-#             elif gt_lt == ">":
-#                 if int(float(vals[2])) > value:
-#                     list_of_pid.append(key)
-#             else:
-#                 raise ValueError("Please enter < or > as the second argument.")
-#     # Check if the length of the list is not more than number of observations
-#     # in the data
-#     assert len(list_of_pid) <= len(lab_dict)
-#     return list_of_pid
+def sick_patients(
+    p_dict: Dict[str, List[object]], lab: str, gt_lt: str, value: int
+) -> list:
+    list_of_patients_sick = []
+    for p in p_dict:
+        lab_list = p_dict[p].lab
+        for labs in lab_list:
+            if labs.name == lab:
+                if gt_lt == "<":
+                    if labs.value < value:
+                        list_of_patients_sick.append(p)
+                elif gt_lt == ">":
+                    if labs.value > value:
+                        list_of_patients_sick.append(p)
+    # Make sure list is unique
+    unique_list = []
+    for L in list_of_patients_sick:
+        if L not in unique_list:
+            unique_list.append(L)
+    return unique_list
+
+
+# if __name__ == "__main__":
+#     ## Here we import the objects into a dictionary
+#     patient_file = "PatientCorePopulatedTable.txt"
+#     lab_file = "LabsCorePopulatedTable.txt"
+#     patient_dict, lab_dict = parse_data(lab_file, patient_file, get_lab_dict=True)
+#     # print(num_older_than(patient_dict, 25))
+#     print(sick_patients(patient_dict, "CBC: RDW", ">", 13))
