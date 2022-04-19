@@ -113,7 +113,7 @@ def num_older_than(p_dict: Dict[str, List[object]], age: int) -> int:
 
 
 def sick_patients(
-    p_dict: Dict[str, List[object]], lab: str, gt_lt: str, value: int
+    p_dict: Dict[str, List[Patient]], lab: str, gt_lt: str, value: int
 ) -> list:
     list_of_patients_sick = []
     for p in p_dict:
