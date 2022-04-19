@@ -104,7 +104,7 @@ def parse_data(
 
 # We access the above patient_dict to return number of
 # patients older than input age
-def num_older_than(p_dict: Dict[str, List[object]], age: int) -> int:
+def num_older_than(p_dict: Dict[str, List[Patient]], age: int) -> int:
     count = 0  # 1
     for P in p_dict:
         if p_dict[P].age > age:
