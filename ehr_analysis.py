@@ -1,6 +1,6 @@
 ### This module contains functions to parse and analyze patient data
 from datetime import datetime, timedelta, date
-from typing import TypeVar, Dict, List
+from typing import Any, TypeVar, Dict, List, Tuple
 
 from itsdangerous import NoneAlgorithm
 
@@ -53,10 +53,10 @@ class Lab:
 
 def parse_data(
     lab_file: str, patient_file: str, get_lab_dict: bool = False
-) -> Dict[str, List[object]]:
+) -> Tuple[Dict[str, List(Patient)], Dict[str, Any]]:
 
     patient_dict = {}  # 1
-    lab_dict = {}
+    lab_dict: Dict[str, List(Lab)] = {}
 
     # Populate lab dictionary with lab object
     with open(lab_file) as f:  # 1
@@ -67,8 +67,10 @@ def parse_data(
                 pass
             else:
                 fields = line.split("\t")
-                lab_date = datetime.strptime(fields[5][:23], "%Y-%m-%d %H:%M:%S.%f")
-                lab_object = Lab(fields[0], fields[2], fields[3], fields[4], lab_date)
+                # lab_date = datetime.strptime(fields[5][:23], "%Y-%m-%d %H:%M:%S.%f")
+                lab_object = Lab(
+                    fields[0], fields[2], fields[3], fields[4], fields[5][:23]
+                )
                 if lab_object.p_id in lab_dict:
                     # append to value of exisitng id
                     lab_dict[lab_object.p_id].append(lab_object)
@@ -94,12 +96,7 @@ def parse_data(
                     lab_dict[patient_ID],
                 )
                 patient_dict[patient_ID] = patient_obj
-
-    # Return dictionaries
-    if get_lab_dict:
-        return patient_dict, lab_dict
-    else:
-        return patient_dict
+    return patient_dict, lab_dict
 
 
 # We access the above patient_dict to return number of
@@ -132,12 +129,3 @@ def sick_patients(
         if L not in unique_list:
             unique_list.append(L)
     return unique_list
-
-
-# if __name__ == "__main__":
-#     ## Here we import the objects into a dictionary
-#     patient_file = "PatientCorePopulatedTable.txt"
-#     lab_file = "LabsCorePopulatedTable.txt"
-#     patient_dict, lab_dict = parse_data(lab_file, patient_file, get_lab_dict=True)
-#     # print(num_older_than(patient_dict, 25))
-#     print(sick_patients(patient_dict, "CBC: RDW", ">", 13))
