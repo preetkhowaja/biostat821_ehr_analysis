@@ -2,8 +2,6 @@
 from datetime import datetime, timedelta, date
 from typing import Any, TypeVar, Dict, List, Tuple
 
-from itsdangerous import NoneAlgorithm
-
 # Initiating Classes for Patient and Lab
 class Patient:
     def __init__(
@@ -97,7 +95,6 @@ def parse_data(
                 )
                 patient_dict[patient_ID] = patient_obj
     return patient_dict, lab_dict
-
 
 # We access the above patient_dict to return number of
 # patients older than input age

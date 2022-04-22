@@ -66,6 +66,7 @@ def test_sick_patients():
 
     assert sick_patients(test_patient_dict, "CBC: ABSOLUTE LYMPHOCYTES", ">", 15) == [
         "B7E9FC4C-5182-4A34-954E-CEF5FC07E96D"
+
     ]
 
 
