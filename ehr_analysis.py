@@ -1,7 +1,6 @@
 ### This module contains functions to parse and analyze patient data
 from datetime import datetime, timedelta, date
-from typing import TypeVar, Dict, List
-
+from typing import TypeVar, Dict, List, Tuple, Any
 
 
 # Initiating Classes for Patient and Lab
@@ -53,10 +52,10 @@ class Lab:
 
 def parse_data(
     lab_file: str, patient_file: str, get_lab_dict: bool = False
-) -> Dict[str, List[object]]:
+) -> Tuple[Dict[str, Patient], Dict[str, List[Lab]]]:
 
     patient_dict = {}  # 1
-    lab_dict = {}
+    lab_dict: Dict[str, List(Lab)] = {}
 
     # Populate lab dictionary with lab object
     with open(lab_file) as f:  # 1
@@ -67,8 +66,10 @@ def parse_data(
                 pass
             else:
                 fields = line.split("\t")
-                lab_date = datetime.strptime(fields[5][:23], "%Y-%m-%d %H:%M:%S.%f")
-                lab_object = Lab(fields[0], fields[2], fields[3], fields[4], lab_date)
+                # lab_date = datetime.strptime(fields[5][:23], "%Y-%m-%d %H:%M:%S.%f")
+                lab_object = Lab(
+                    fields[0], fields[2], fields[3], fields[4], fields[5][:23]
+                )
                 if lab_object.p_id in lab_dict:
                     # append to value of exisitng id
                     lab_dict[lab_object.p_id].append(lab_object)
@@ -104,7 +105,7 @@ def parse_data(
 
 # We access the above patient_dict to return number of
 # patients older than input age
-def num_older_than(p_dict: Dict[str, List[object]], age: int) -> int:
+def num_older_than(p_dict: Dict[str, List[Patient]], age: int) -> int:
     count = 0  # 1
     for P in p_dict:
         if p_dict[P].age > age:
@@ -113,7 +114,7 @@ def num_older_than(p_dict: Dict[str, List[object]], age: int) -> int:
 
 
 def sick_patients(
-    p_dict: Dict[str, List[object]], lab: str, gt_lt: str, value: int
+    p_dict: Dict[str, List[Patient]], lab: str, gt_lt: str, value: int
 ) -> list:
     list_of_patients_sick = []
     for p in p_dict:
